@@ -21,7 +21,7 @@ module.exports = ({email, name, password, gender, phone}) => {
 	} else if (isEmpty(gender)) {
 		message = 'Gender can not be empty';
 		error = true;
-	} else if (isEmpty(phone))  {
+	} else if (isEmpty(phone)) {
 		message = 'Phone number can not be empty';
 		error = true;
 	}
