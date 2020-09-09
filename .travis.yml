@@ -7,7 +7,7 @@ deploy:
     provider: heroku
     api_key:
         secure: FW3MQ/1tNS5ehwVXh7Kl4O4Ui/2sojLDffNphC0fLc/Z1odX83ioTt9JhvzRSwifX4Mflucvt8ZOuixn8XC8ntsiX1lnQKJhS4hAM4lvUMCF4glk4MrCjvx3MHuEv9lah5YuGdauJvrgApxgaITS/DnIzcQcDrNPWYbnZCGIrw/Ziek/r9VwFJ6qMvTGM0LnfSzLIwrNgCl3qiDfWkANSSyTbCELDQDIk0EwoMBzqQAIn2az98IRNDFibAs5ECPmw0LtlMlsApzm9e1OeLXqzi3tIU4A7Q+Aymk+nsO4lMN2n01byIeJuxd+rVckpEeJjqZiCaP/qetMBDLJXaCJfkpovFhiHPNokJAu4qdPX2coDXSh0crUtfdPqkh2t2hwOiZsFebP+gA8SDODqudKnq1mQi+YTD5DBGh3jpg17d6O103Kake6IGyUK5qzxeSSH2rLNSvnPOXx97bwdHAz4hdMtWzPpjfbQAIxfthG3Xgcv7qx/N1F8p2FtJZC+OqkiI7ovpnNTD3HahOTYJufGhRM0hrfC8aQm0vbvSGekD4G3PDpte8x5iMjjlWYinNqZ4tBaRAbS+CGGQ0DfpHPwvQ8Roxi5o9othwfAHswQqVqqjPoCrB8jDMYKQzymCB1HyS2102VJ81gpxL08Aaz0aWaNVepd6QOM3K9G4/crvQ=
-    app: sehc9ja
+    app: ehc9ja
     on:
         repo: oluwaferanmiadetunji/ehc
     skip_cleanup: 'true'
