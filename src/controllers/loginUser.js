@@ -1,6 +1,6 @@
 const User = require('../models/user');
 const validateLoginCredentials = require('../helpers/validateLoginCredentials');
-const getUserByEmail = require('../queries/getUserByEmail');
+const getDetails = require('../queries/getDetailsByEmail');
 const {validate} = require('../helpers/encrypt');
 const {generate} = require('../helpers/jwtToken');
 
@@ -13,7 +13,7 @@ module.exports = async (req, res) => {
 	if (validateParams.error) {
 		return res.status(417).json({status: 'error', message: validateParams.message, data: ''});
 	} else {
-		const getUser = await getUserByEmail({User, email});
+		const getUser = await getDetails(User, email);
 		if (!getUser) {
 			return res.status(409).json({status: 'error', message: 'Wrong credentials', data: ''});
 		} else {

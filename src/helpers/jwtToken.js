@@ -30,7 +30,7 @@ module.exports = {
 			var decoded = jwt.verify(token, secret);
 			return decoded;
 		} catch (err) {
-			throw new Error(err);
+			return null;
 		}
 	},
 };
