@@ -1,7 +1,7 @@
 const User = require('../models/user');
 const validateUserCredentials = require('../helpers/validateUserCredentials');
 const {checkByEmail, checkByPhone} = require('../queries/checkExistingUser');
-const saveUser = require('../helpers/saveUser');
+const saveUser = require('../queries/saveUser');
 const {hash} = require('../helpers/encrypt');
 const {generate} = require('../helpers/jwtToken');
 

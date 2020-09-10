@@ -15,6 +15,7 @@ module.exports = async (user, sender, message) => {
 		await newNotification.save();
 		
 		return true;
+		
 	} catch (err) {
 		return false;
 	}

@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
 	const email = req.body.email.trim();
 	const password = req.body.password.trim();
 
-	// calidate the user's data
+	// validate the user's data
 	const validateParams = validateLoginCredentials({email, password});
 
 	if (validateParams.error) {
