@@ -12,18 +12,21 @@ module.exports = async (req, res) => {
 	const gender = req.body.gender.trim();
 	const phone = req.body.phone;
 
+	// validate the user's data
 	const validateParams = validateUserCredentials({email, name, password, gender, phone});
 
 	if (validateParams.error) {
 		return res.status(417).json({status: 'error', message: validateParams.message, data: ''});
 	}
 
+	// check if the email already exists
 	const checkIfUserByEmail = await checkByEmail({User, email});
 
 	if (checkIfUserByEmail) {
 		return res.status(409).json({status: 'error', message: 'Email exists already', data: ''});
 	}
 
+	// check if the phone already exists
 	const checkIfUserByPhone = await checkByPhone({User, phone});
 
 	if (checkIfUserByPhone) {
@@ -31,20 +34,25 @@ module.exports = async (req, res) => {
 	}
 
 	try {
-		// hash password
+		// hash the user's password
 		const userPassword = hash(password, 10);
+
+		// save the user to the database
 		const addUser = await saveUser({User, data: {email, name, password: userPassword, phone, gender, status: 'active'}});
+
 		if (addUser.error) {
 			return res.status(500).json({status: 'error', message: addUser.message, data: ''});
-		} else {
-			const payload = {name, email, id: addUser.data._id};
-			const userToken = generate(payload);
-			return res
-				.status(201)
-				.json({status: 'ok', message: addUser.message, data: {name, email, phone, gender, status: 'active', userToken}});
 		}
+
+		const payload = {name, email, id: addUser.data._id};
+
+		// generate the user's token
+		const userToken = generate(payload);
+
+		return res
+			.status(201)
+			.json({status: 'ok', message: addUser.message, data: {name, email, phone, gender, status: 'active', userToken}});
 	} catch (err) {
-		console.log(err);
 		return res.status(500).json({status: 'error', message: 'Something went wrong!', data: ''});
 	}
 };

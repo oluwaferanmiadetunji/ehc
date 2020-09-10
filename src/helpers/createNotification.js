@@ -10,7 +10,10 @@ module.exports = async (user, sender, message) => {
 			message,
 			readStatus: false,
 		});
+
+		// save notification to database
 		await newNotification.save();
+		
 		return true;
 	} catch (err) {
 		return false;

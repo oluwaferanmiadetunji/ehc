@@ -10,7 +10,10 @@ module.exports = async ({User, data}) => {
 			gender: data.gender,
 			status: data.status,
 		});
+
+		// save user to datbase
 		await newUser.save();
+		
 		return Object.freeze({
 			error: false,
 			message: 'User successfully saved',

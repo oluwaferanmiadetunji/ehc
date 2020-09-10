@@ -8,43 +8,49 @@ module.exports = async (req, res) => {
 	const email = req.body.email.trim();
 	const password = req.body.password.trim();
 
+	// calidate the user's data
 	const validateParams = validateLoginCredentials({email, password});
 
 	if (validateParams.error) {
 		return res.status(417).json({status: 'error', message: validateParams.message, data: ''});
-	} else {
-		const getUser = await getDetails(User, email);
-		if (!getUser) {
+	}
+
+	// get the user's details
+	const getUser = await getDetails(User, email);
+
+	if (!getUser) {
+		return res.status(409).json({status: 'error', message: 'Wrong credentials', data: ''});
+	}
+
+	try {
+		const hashedPassword = getUser.password;
+		const plainPassword = password;
+
+		// validate the user's password
+		const passwordIsMatch = validate(plainPassword, hashedPassword);
+		if (!passwordIsMatch) {
 			return res.status(409).json({status: 'error', message: 'Wrong credentials', data: ''});
-		} else {
-			try {
-				// validate password
-				const hashedPassword = getUser.password;
-				const plainPassword = password;
-				const passwordIsMatch = validate(plainPassword, hashedPassword);
-				if (!passwordIsMatch) {
-					return res.status(409).json({status: 'error', message: 'Wrong credentials', data: ''});
-				} else {
-					const payload = {id: getUser._id, name: getUser.name, email: getUser.email, phone: getUser.phone};
-					const userToken = generate(payload);
-					return res.status(201).json({
-						status: 'ok',
-						message: 'User logged in successfully',
-						data: {
-							_id: getUser._id,
-							name: getUser.name,
-							email: getUser.email,
-							phone: getUser.phone,
-							gender: getUser.gender,
-							status: getUser.status,
-							userToken,
-						},
-					});
-				}
-			} catch (err) {
-				console.log(err);
-				return res.status(500).json({status: 'error', message: 'Something went wrong!', data: ''});
-			}
 		}
+
+		// generate the user's token
+		const payload = {id: getUser._id, name: getUser.name, email: getUser.email, phone: getUser.phone};
+		const userToken = generate(payload);
+		
+		return res.status(201).json({
+			status: 'ok',
+			message: 'User logged in successfully',
+			data: {
+				_id: getUser._id,
+				name: getUser.name,
+				email: getUser.email,
+				phone: getUser.phone,
+				gender: getUser.gender,
+				status: getUser.status,
+				userToken,
+			},
+		});
+	} catch (err) {
+		console.log(err);
+		return res.status(500).json({status: 'error', message: 'Something went wrong!', data: ''});
 	}
 };
