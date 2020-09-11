@@ -8,6 +8,7 @@ const NurseSchema = new Schema(
 		name: {type: String, required: true},
 		email: {type: String},
 		imageURL: {type: String},
+		image: {data: Buffer, contentType: String},
 		type: {type: String},
 		phone: {type: String},
 		hours: {type: String},

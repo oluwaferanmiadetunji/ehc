@@ -17,6 +17,7 @@ module.exports = async (user, sender, message) => {
 		return true;
 		
 	} catch (err) {
+		console.log(err)
 		return false;
 	}
 };
