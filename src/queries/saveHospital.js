@@ -9,7 +9,7 @@ module.exports = async ({data}) => {
 			email: data.email,
 			phone: data.phone,
 			type: data.type,
-			address: data.address,
+			location: data.location,
 			specialty: data.specialty,
 		});
 

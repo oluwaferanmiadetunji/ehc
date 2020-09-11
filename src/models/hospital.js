@@ -9,7 +9,8 @@ const HospitalSchema = new Schema(
 		email: {type: String, required: true},
 		type: {type: String},
 		specialty: {type: String},
-		address: {type: String},
+		location: {type: String},
+
 	},
 	{
 		timestamps: true,

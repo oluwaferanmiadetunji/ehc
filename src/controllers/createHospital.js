@@ -7,10 +7,10 @@ module.exports = async (req, res) => {
 	const type = req.body.type.trim();
 	const specialty = req.body.specialty.trim();
 	const phone = req.body.phone;
-	const address = req.body.address.trim();
+	const location = req.body.location.trim();
 
 	// validate the user's data
-	const validateParams = validateHospitalData({email, name, type, specialty, phone, address});
+	const validateParams = validateHospitalData({email, name, type, specialty, phone, location});
 
 	if (validateParams.error) {
 		return res.status(417).json({status: 'error', message: validateParams.message, data: ''});
@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
 
 	try {
 		// save the user to the database
-		const addHospital = await saveHospital({data: {email, name, type, specialty, phone, address}});
+		const addHospital = await saveHospital({data: {email, name, type, specialty, phone, location}});
 
 		if (addHospital.error) {
 			return res.status(500).json({status: 'error', message: addHospital.message, data: ''});
@@ -26,7 +26,7 @@ module.exports = async (req, res) => {
 
 		return res
 			.status(201)
-			.json({status: 'ok', message: addHospital.message, data: {email, name, type, specialty, phone, address}});
+			.json({status: 'ok', message: addHospital.message, data: {email, name, type, specialty, phone, location}});
 	} catch (err) {
 		console.log(err);
 		return res.status(500).json({status: 'error', message: 'Something went wrong!', data: ''});
