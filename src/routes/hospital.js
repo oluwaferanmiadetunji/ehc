@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const getNurses = require('../controllers/getNurses');
+const getHospitals = require('../controllers/getHospitals');
 const auth = require('../middlewares/auth');
 
-router.get('/nurses', auth, getNurses);
+router.get('/hospitals', auth, getHospitals);
 
 module.exports = router;
