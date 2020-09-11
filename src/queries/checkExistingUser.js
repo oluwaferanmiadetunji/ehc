@@ -1,18 +1,28 @@
-const checkByEmail = async ({User, email}) => {
-	try {
-		const user = await User.findOne({email});
-		return !!user ? true : false;
-	} catch (err) {
-		return err;
+const User = require('../models/user');
+const Nurse = require('../models/nurse');
+const checkByEmail = async (Model, email) => {
+	switch (Model) {
+		case 'User':
+			const user = await User.findOne({email});
+			return !!user ? true : false;
+		case 'Nurse':
+			const nurse = await Nurse.findOne({email});
+			return !!nurse ? true : false;
+		default:
+			return null;
 	}
 };
 
-const checkByPhone = async ({User, phone}) => {
-	try {
-		const user = await User.findOne({phone});
-		return !!user ? true : false;
-	} catch (err) {
-		return err;
+const checkByPhone = async (Model, phone) => {
+	switch (Model) {
+		case 'User':
+			const userP = await User.findOne({phone});
+			return !!userP ? true : false;
+		case 'Nurse':
+			const nurseP = await Nurse.findOne({phone});
+			return !!nurseP ? true : false;
+		default:
+			return null;
 	}
 };
 

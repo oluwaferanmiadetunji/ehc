@@ -6,3 +6,4 @@ const auth = require('../middlewares/auth');
 router.get('/hospitals', auth, getHospitals);
 
 module.exports = router;
+  
