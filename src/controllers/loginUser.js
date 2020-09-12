@@ -50,7 +50,6 @@ module.exports = async (req, res) => {
 			},
 		});
 	} catch (err) {
-		console.log(err);
 		return res.status(500).json({status: 'error', message: 'Something went wrong!', data: ''});
 	}
 };

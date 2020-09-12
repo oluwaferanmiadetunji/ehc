@@ -28,7 +28,6 @@ module.exports = async (req, res) => {
 			.status(201)
 			.json({status: 'ok', message: addHospital.message, data: {email, name, type, specialty, phone, location}});
 	} catch (err) {
-		console.log(err);
 		return res.status(500).json({status: 'error', message: 'Something went wrong!', data: ''});
 	}
 };

@@ -11,6 +11,7 @@ module.exports = async ({data}) => {
 			phone: data.phone,
 			gender: data.gender,
 			status: data.status,
+			imageURL: data.imageURL,
 		});
 
 		// save user to datbase

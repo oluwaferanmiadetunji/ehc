@@ -12,6 +12,7 @@ module.exports = async ({data}) => {
 			type: data.type,
 			location: data.location,
 			hours: data.hours,
+			imageURL: data.imageURL,
 		});
 
 		// save hospital to datbase

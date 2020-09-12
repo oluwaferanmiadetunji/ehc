@@ -15,6 +15,7 @@ const UserSchema = new Schema(
 		gender: {type: String},
 		status: {type: String},
 		phone: {type: String},
+		imageURL: {type: String},
 	},
 	{
 		timestamps: true,
