@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
 	const type = req.body.type.trim();
 	const specialty = req.body.specialty.trim();
 	const phone = req.body.phone;
-	const location = req.body.location.trim();
+	const location = req.body.location.trim().toLowerCase();
 
 	// validate the user's data
 	const validateParams = validateHospitalData({email, name, type, specialty, phone, location});
