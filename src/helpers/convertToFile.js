@@ -1,6 +1,5 @@
 const {v4: uuidv4} = require('uuid');
 const fs = require('fs');
-const path = require('path');
 
 module.exports = (data) => {
 	let error;
@@ -10,6 +9,7 @@ module.exports = (data) => {
 	let buff = new Buffer.from(data, 'base64');
 	fs.writeFile(filePath, buff, (err) => {
 		if (err) {
+			console.log(err);
 			error = true;
 		} else {
 			error = false;

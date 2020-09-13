@@ -23,6 +23,7 @@ module.exports = async ({data}) => {
 			data: newUser,
 		});
 	} catch (err) {
+		console.log(err);
 		return Object.freeze({
 			error: true,
 			message: 'User not saved',
