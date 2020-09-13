@@ -33,9 +33,15 @@ module.exports = async (req, res) => {
 		}
 
 		// generate the user's token
-		const payload = {id: getUser._id, name: getUser.name, email: getUser.email, phone: getUser.phone};
+		const payload = {
+			id: getUser._id,
+			name: getUser.name,
+			email: getUser.email,
+			phone: getUser.phone,
+			imageURL: getUser.imageURL,
+		};
 		const userToken = generate(payload);
-		
+
 		return res.status(201).json({
 			status: 'ok',
 			message: 'User logged in successfully',
@@ -46,6 +52,7 @@ module.exports = async (req, res) => {
 				phone: getUser.phone,
 				gender: getUser.gender,
 				status: getUser.status,
+				imageURL: getUser.imageURL,
 				userToken,
 			},
 		});
