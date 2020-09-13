@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
 	const type = req.body.type.trim();
 	const hours = req.body.hours.trim();
 	const phone = req.body.phone;
-	const location = req.body.location.trim();
+	const location = req.body.location.trim().toLowerCase();
 	const image = req.body.image;
 
 	// validate the user's data

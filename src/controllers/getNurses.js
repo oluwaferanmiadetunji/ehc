@@ -1,7 +1,7 @@
 const getNurse = require('../queries/getNurses');
 
 module.exports = async (req, res) => {
-	const location = req.body.location;
+	const location = req.body.location.toLowerCase();
 	// get the notifications of the user
 	const details = await getNurse(location);
 
