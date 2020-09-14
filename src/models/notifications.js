@@ -8,6 +8,7 @@ const NotificationsSchema = new Schema(
 		userId: {type: String},
 		sender: {type: String},
 		message: {type: String},
+		title: {type: String},
 		readStatus: {type: Boolean},
 	},
 	{
