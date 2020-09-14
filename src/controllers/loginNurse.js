@@ -1,4 +1,4 @@
-const User = require('../models/user');
+const Nurse = require('../models/nurse');
 const validateLoginCredentials = require('../helpers/validateLoginCredentials');
 const getDetails = require('../queries/getDetailsByEmail');
 const {validate} = require('../helpers/encrypt');
@@ -16,7 +16,7 @@ module.exports = async (req, res) => {
 	}
 
 	// get the user's details
-	const getUser = await getDetails(User, email);
+	const getUser = await getDetails(Nurse, email);
 
 	if (!getUser) {
 		return res.status(409).json({status: 'error', message: 'Wrong credentials', data: ''});
@@ -50,8 +50,9 @@ module.exports = async (req, res) => {
 				name: getUser.name,
 				email: getUser.email,
 				phone: getUser.phone,
-				gender: getUser.gender,
-				status: getUser.status,
+        type: getUser.type,
+        hours: getUser.hours,
+        location: getUser.location,
 				imageURL: getUser.imageURL,
 				userToken,
 			},
