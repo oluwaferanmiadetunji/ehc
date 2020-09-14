@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const Nurse = require('../models/nurse');
 
 module.exports = async ({id, data}) => {
@@ -11,19 +10,21 @@ module.exports = async ({id, data}) => {
 		nurse.phone = data.phone;
 		nurse.hours = data.hours;
 		nurse.password = data.password;
-		// save hospital to datbase
+		nurse.type = data.type;
+		nurse.location = data.location;
+		// save nurse to datbase
 		await nurse.save();
 
 		return Object.freeze({
 			error: false,
-			message: 'User successfully saved',
+			message: 'Nurse successfully updated',
 			data: nurse,
 		});
 	} catch (err) {
 		console.log(err);
 		return Object.freeze({
 			error: true,
-			message: 'Nurse not saved',
+			message: 'Nurse not updated',
 		});
 	}
 };

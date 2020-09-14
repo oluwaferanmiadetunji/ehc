@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const helmet = require('helmet');
-const authRoutes = require('../routes/auth');
+const user = require('../routes/user');
 const home = require('../routes/home');
 const notification = require('../routes/notification');
 const feedback = require('../routes/feedback');
@@ -29,7 +29,7 @@ let morganFunction = function (tokens, req, res) {
 app.use(morgan(morganFunction));
 
 app.use('/', home);
-app.use('/', authRoutes);
+app.use('/', user);
 app.use('/', notification);
 app.use('/', feedback);
 app.use('/', nurse);

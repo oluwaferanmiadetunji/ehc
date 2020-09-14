@@ -1,6 +1,6 @@
-const validateNurseData = require('../helpers/validateNurseData');
+const validateUserCredentials = require('../helpers/validateUserCredentials');
 const {checkByEmail, checkByPhone} = require('../queries/checkExistingUser');
-const updateNurse = require('../queries/updateNurse');
+const updateUser = require('../queries/updateUser');
 const saveImage = require('../helpers/saveImage');
 const {hash} = require('../helpers/encrypt');
 
@@ -8,27 +8,25 @@ module.exports = async (req, res) => {
 	const id = req.body.id;
 	const email = req.body.email.trim();
 	const name = req.body.name.trim();
-	const hours = req.body.hours.trim();
 	const phone = req.body.phone;
 	const image = req.body.image;
 	const password = req.body.password;
-	const type = req.body.type;
-	const location = req.body.location;
+	const gender = req.body.gender;
 
-	const validateParams = validateNurseData({email, name, password, type, phone, location, image});
+	const validateParams = validateUserCredentials({email, name, gender, password, phone, image});
 
 	if (validateParams.error) {
 		return res.status(417).json({status: 'error', message: validateParams.message, data: ''});
 	}
 
 	// check if the email already exists
-	const checkIfUserByEmail = await checkByEmail('Nurse', email);
+	const checkIfUserByEmail = await checkByEmail('User', email);
 
 	if (checkIfUserByEmail) {
 		return res.status(409).json({status: 'error', message: 'Email exists already', data: ''});
 	} else {
 		// check if the phone already exists
-		const checkIfUserByPhone = await checkByPhone('Nurse', phone);
+		const checkIfUserByPhone = await checkByPhone('User', phone);
 
 		if (checkIfUserByPhone) {
 			return res.status(409).json({status: 'error', message: 'Phone number exists already', data: ''});
@@ -44,21 +42,19 @@ module.exports = async (req, res) => {
 				}
 
 				// save the user to the database
-				const addNurse = await updateNurse({
+				const addUser = await updateUser({
 					id,
-					data: {email, name, password: userPassword, phone, type, imageURL: imageUrl, hours},
+					data: {email, name, password: userPassword, gender, phone, imageURL: imageUrl},
 				});
 
-				if (addNurse.error) {
-					return res.status(500).json({status: 'error', message: addNurse.message, data: ''});
+				if (addUser.error) {
+					return res.status(500).json({status: 'error', message: addUser.message, data: ''});
 				}
 
-				const payload = {name, email, imageURL: imageUrl, id: addNurse.data._id};
-
-				return res.status(201).json({
+				return res.status(200).json({
 					status: 'ok',
-					message: addNurse.message,
-					data: {name, email, phone, type, location, imageURL: imageUrl, hours},
+					message: addUser.message,
+					data: {name, email, phone, gender, imageURL: imageUrl},
 				});
 			} catch (err) {
 				console.log(err);
