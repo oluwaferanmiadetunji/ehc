@@ -5,13 +5,12 @@ module.exports = async ({id, data}) => {
 	try {
 		let nurse;
 		nurse = await Nurse.findOne({_id: id});
-		if (nurse.name) nurse.name = data.name;
-		if (nurse.email) nurse.email = data.email;
-		if (nurse.imageURL) nurse.imageURL = data.imageURL;
-		if (nurse.type) nurse.type = data.type;
-		if (nurse.phone) nurse.phone = data.phone;
-		if (nurse.hours) nurse.hours = data.hours;
-		if (nurse.location) nurse.location = data.location;
+		nurse.name = data.name;
+		nurse.email = data.email;
+		nurse.imageURL = data.imageURL;
+		nurse.phone = data.phone;
+		nurse.hours = data.hours;
+		nurse.password = data.password;
 		// save hospital to datbase
 		await nurse.save();
 
