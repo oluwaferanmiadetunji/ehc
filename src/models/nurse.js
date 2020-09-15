@@ -13,6 +13,7 @@ const NurseSchema = new Schema(
 		hours: {type: String},
 		location: {type: String},
 		password: {type: String},
+		token: {type: String},
 	},
 	{
 		timestamps: true,

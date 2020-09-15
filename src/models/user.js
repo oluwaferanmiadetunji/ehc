@@ -16,6 +16,7 @@ const UserSchema = new Schema(
 		status: {type: String},
 		phone: {type: String},
 		imageURL: {type: String},
+		token: {type: String},
 	},
 	{
 		timestamps: true,
