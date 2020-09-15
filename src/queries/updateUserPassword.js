@@ -1,10 +1,10 @@
 const User = require('../models/user');
 
-module.exports = async (email, data) => {
+module.exports = async (email, password) => {
 	try {
 		let user;
 		user = await User.findOne({email});
-		user.password = data.password;
+		user.password = password;
 		// save hospital to datbase
 		await user.save();
 

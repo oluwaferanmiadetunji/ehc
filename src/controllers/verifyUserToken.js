@@ -31,8 +31,6 @@ module.exports = async (req, res) => {
 
 	const getUser = await getDetails(User, email);
 
-	console.log(getUser);
-
 	if (getUser.token != token) {
 		return res.status(404).json({status: 'error', message: 'Incorrect verification token', data: ''});
 	} else {
@@ -43,11 +41,11 @@ module.exports = async (req, res) => {
 			const update = updateUserPassword(email, userPassword);
 
 			if (update.error) {
-				return res.status(500).json({status: 'error', message: 'Password changed successfully', data: ''});
+				return res.status(500).json({status: 'error', message: 'Password could not be changed', data: ''});
 			}
 			return res.status(201).json({
 				status: 'ok',
-				message: update.message,
+				message: 'Password changed successfully',
 				data: '',
 			});
 		} catch (err) {

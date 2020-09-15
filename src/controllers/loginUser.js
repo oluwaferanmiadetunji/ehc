@@ -51,12 +51,12 @@ module.exports = async (req, res) => {
 				email: getUser.email,
 				phone: getUser.phone,
 				gender: getUser.gender,
-				status: getUser.status,
 				imageURL: getUser.imageURL,
 				userToken,
 			},
 		});
 	} catch (err) {
+		console.log(err)
 		return res.status(500).json({status: 'error', message: 'Something went wrong!', data: ''});
 	}
 };
