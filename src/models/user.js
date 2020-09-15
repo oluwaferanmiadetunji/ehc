@@ -13,7 +13,6 @@ const UserSchema = new Schema(
 		},
 		password: {type: String},
 		gender: {type: String},
-		status: {type: String},
 		phone: {type: String},
 		imageURL: {type: String},
 		token: {type: String},
