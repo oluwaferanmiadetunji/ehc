@@ -6,6 +6,10 @@ const saveToken = require('../queries/saveToken');
 module.exports = async (req, res) => {
 	const email = req.body.email.trim();
 
+	if (email === '') {
+		return res.status(417).json({status: 'error', message: 'Please, enter a valid email', data: ''});
+	}
+
 	const getUser = await getDetails(User, email);
 
 	if (!getUser) {
@@ -21,5 +25,5 @@ module.exports = async (req, res) => {
 
 	await sendEmail(email, token);
 
-	return res.status(200).json({status: 'ok', message: 'A token to has been sent to your email address', data: ''});
+	return res.status(200).json({status: 'ok', message: 'A verification token to has been sent to your email address', data: ''});
 };

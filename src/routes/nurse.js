@@ -12,6 +12,7 @@ router.post('/nurses', getNurses);
 router.post('/nurses/add', createNurse);
 router.post('/nurses/login', loginNurse);
 router.post('/nurses/update', auth, updateNurse);
+router.post('/nurses/verify', resetPassword);
 router.post('/nurses/resetPassword', resetPassword);
 
 module.exports = router;
