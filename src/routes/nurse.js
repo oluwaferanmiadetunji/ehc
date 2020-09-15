@@ -5,6 +5,7 @@ const createNurse = require('../controllers/createNurse');
 const loginNurse = require('../controllers/loginNurse');
 const updateNurse = require('../controllers/updateNurse');
 const resetPassword = require('../controllers/getNurseToken');
+const verifyNurseToken = require('../controllers/verifyNurseToken');
 
 const auth = require('../middlewares/auth');
 
@@ -13,6 +14,6 @@ router.post('/nurses/add', createNurse);
 router.post('/nurses/login', loginNurse);
 router.post('/nurses/update', auth, updateNurse);
 router.post('/nurses/verify', resetPassword);
-router.post('/nurses/resetPassword', resetPassword);
+router.post('/nurses/resetPassword', verifyNurseToken);
 
 module.exports = router;
