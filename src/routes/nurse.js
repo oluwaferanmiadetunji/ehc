@@ -12,7 +12,7 @@ const auth = require('../middlewares/auth');
 router.post('/nurses', getNurses);
 router.post('/nurses/add', createNurse);
 router.post('/nurses/login', loginNurse);
-router.post('/nurses/update', auth, updateNurse);
+router.post('/nurses/update', updateNurse);
 router.post('/nurses/verify', resetPassword);
 router.post('/nurses/resetPassword', verifyNurseToken);
 
