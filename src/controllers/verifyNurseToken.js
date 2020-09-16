@@ -1,5 +1,3 @@
-const Nurse = require('../models/nurse');
-const getDetails = require('../queries/getDetailsByEmail');
 const {checkByEmail} = require('../queries/checkExistingUser');
 const {hash} = require('../helpers/encrypt');
 const updateNursePassword = require('../queries/updateNursePassword');
@@ -24,8 +22,6 @@ module.exports = async (req, res) => {
 	if (!checkIfUserByEmail) {
 		return res.status(409).json({status: 'error', message: 'Email does not exist', data: ''});
 	}
-
-	const getUser = await getDetails(Nurse, email);
 
 	try {
 		// hash the user's password
