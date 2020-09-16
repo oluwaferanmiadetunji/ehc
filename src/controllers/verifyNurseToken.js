@@ -6,14 +6,10 @@ const updateNursePassword = require('../queries/updateNursePassword');
 
 module.exports = async (req, res) => {
 	const email = req.body.email.trim();
-	const token = req.body.token;
 	const password = req.body.password.trim();
 
 	if (email === '') {
 		return res.status(417).json({status: 'error', message: 'Please, enter a valid email', data: ''});
-	}
-	if (token === '') {
-		return res.status(417).json({status: 'error', message: 'Please, enter a verification token', data: ''});
 	}
 	if (password === '') {
 		return res.status(417).json({status: 'error', message: 'Please, enter a password', data: ''});
@@ -31,25 +27,21 @@ module.exports = async (req, res) => {
 
 	const getUser = await getDetails(Nurse, email);
 
-	if (getUser.token != token) {
-		return res.status(404).json({status: 'error', message: 'Incorrect verification token', data: ''});
-	} else {
-		try {
-			// hash the user's password
-			const userPassword = hash(password, 10);
+	try {
+		// hash the user's password
+		const userPassword = hash(password, 10);
 
-			const update = updateNursePassword(email, userPassword);
+		const update = updateNursePassword(email, userPassword);
 
-			if (update.error) {
-				return res.status(500).json({status: 'error', message: 'Password could not be changed', data: ''});
-			}
-			return res.status(201).json({
-				status: 'ok',
-				message: 'Password changed successfully',
-				data: '',
-			});
-		} catch (err) {
-			return res.status(500).json({status: 'error', message: 'Something went wrong!', data: ''});
+		if (update.error) {
+			return res.status(500).json({status: 'error', message: 'Password could not be changed', data: ''});
 		}
+		return res.status(201).json({
+			status: 'ok',
+			message: 'Password changed successfully',
+			data: '',
+		});
+	} catch (err) {
+		return res.status(500).json({status: 'error', message: 'Something went wrong!', data: ''});
 	}
 };

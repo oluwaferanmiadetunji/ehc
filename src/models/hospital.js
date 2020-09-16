@@ -10,7 +10,7 @@ const HospitalSchema = new Schema(
 		type: {type: String},
 		specialty: {type: String},
 		location: {type: String},
-
+		phone: {type: String},
 	},
 	{
 		timestamps: true,
