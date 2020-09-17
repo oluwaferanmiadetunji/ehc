@@ -7,8 +7,6 @@ const updateNurse = require('../controllers/updateNurse');
 const resetPassword = require('../controllers/getNurseToken');
 const verifyNurseToken = require('../controllers/verifyNurseToken');
 
-const auth = require('../middlewares/auth');
-
 router.post('/nurses', getNurses);
 router.post('/nurses/add', createNurse);
 router.post('/nurses/login', loginNurse);
