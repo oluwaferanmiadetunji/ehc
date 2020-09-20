@@ -5,8 +5,7 @@
 	"main": "src/config/server.js",
 	"scripts": {
 		"dev": "nodemon src/config/server.js",
-		"start": "node src/config/server.js",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"start": "node src/config/server.js"
 	},
 	"keywords": [],
 	"author": "",

@@ -1,6 +1,6 @@
 const {isEmail, isEmpty, isGreater} = require('./helperFunctions');
 
-module.exports = ({email, name, password, gender, phone, image}) => {
+module.exports = ({email, name, password, gender, phone}) => {
 	let message = '';
 	let error = false;
 	if (isEmpty(name)) {
@@ -23,9 +23,6 @@ module.exports = ({email, name, password, gender, phone, image}) => {
 		error = true;
 	} else if (isEmpty(phone)) {
 		message = 'Phone number can not be empty';
-		error = true;
-	} else if (isEmpty(image)) {
-		message = 'Image can not be empty';
 		error = true;
 	}
 

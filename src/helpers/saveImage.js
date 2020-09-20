@@ -1,26 +1,32 @@
 const {storage, firebaseConfig} = require('../config/firebase');
-const convertToFile = require('./convertToFile');
-const deleteFile = require('./deleteFile');
+// const convertToFile = require('./convertToFile');
+// const deleteFile = require('./deleteFile');
 
-module.exports = async (data) => {
+module.exports = async (file) => {
 	let status;
-	let imageUrl;
-	const {error, filePath, imageName} = convertToFile(data);
-	if (error) {
-		status = false;
-		imageUrl = '';
-	} else {
-		await storage.upload(filePath, {
-			resumable: false,
+	// split file name to get extension
+	const imageExtension = file.name.split('.')[file.name.split('.').length - 1];
+	// Append extension to random numbers
+	const imageFileName = `${Math.round(Math.random() * 1000000000000).toString()}.${imageExtension}`;
+
+	const filepath = path.join(os.tmpdir(), imageFileName);
+
+	file.mv(filepath, (err) => {
+		if (err) status = false;
+	});
+
+	await storage.upload(filepath, {
+		resumable: false,
+		metadata: {
 			metadata: {
-				metadata: {
-					contentType: 'image/jpg',
-				},
+				contentType: file.mimetype,
 			},
-		});
-		status = true;
-		imageUrl = `https://firebasestorage.googleapis.com/v0/b/${firebaseConfig.storageBucket}/o/${imageName}?alt=media`;
-		await deleteFile(filePath);
-	}
+		},
+	});
+	fs.unlinkSync(filepath);
+	status = true;
+
+	const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${firebaseConfig.storageBucket}/o/${imageFileName}?alt=media`;
+
 	return {status, imageUrl};
 };

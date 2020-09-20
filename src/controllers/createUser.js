@@ -3,7 +3,7 @@ const {checkByEmail, checkByPhone} = require('../queries/checkExistingUser');
 const saveUser = require('../queries/saveUser');
 const {hash} = require('../helpers/encrypt');
 const {generate} = require('../helpers/jwtToken');
-const saveImage = require('../helpers/saveImage');
+const imageUrl = 'https://firebasestorage.googleapis.com/v0/b/kick-start-ba74b.appspot.com/o/user.jpg?alt=media';
 
 module.exports = async (req, res) => {
 	const email = req.body.email.trim();
@@ -11,10 +11,10 @@ module.exports = async (req, res) => {
 	const password = req.body.password.trim();
 	const gender = req.body.gender.trim();
 	const phone = req.body.phone;
-	const image = req.body.image;
+	const file = req.files;
 
 	// validate the user's data
-	const validateParams = validateUserCredentials({email, name, password, gender, phone, image});
+	const validateParams = validateUserCredentials({email, name, password, gender, phone});
 
 	if (validateParams.error) {
 		return res.status(417).json({status: 'error', message: validateParams.message, data: ''});
@@ -36,12 +36,6 @@ module.exports = async (req, res) => {
 		try {
 			// hash the user's password
 			const userPassword = hash(password, 10);
-
-			const {status, imageUrl} = await saveImage(image);
-
-			if (!status) {
-				return res.status(500).json({status: 'error', message: 'Something went wrong', data: ''});
-			}
 
 			// save the user to the database
 			const addUser = await saveUser({
