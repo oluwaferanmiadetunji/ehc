@@ -1,4 +1,3 @@
-const path = require('path');
 const fs = require('fs');
 const {firebaseConfig, storage} = require('../config/firebase');
 module.exports = async (file) => {
