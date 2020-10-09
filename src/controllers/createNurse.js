@@ -13,11 +13,10 @@ module.exports = async (req, res) => {
 	const hours = req.body.hours.trim();
 	const phone = req.body.phone;
 	const location = req.body.location.trim().toLowerCase();
-	const image = req.body.image;
 	const file = req.file;
 
 	// validate the user's data
-	const validateParams = validateNurseData({email, name, password, type, phone, location, image});
+	const validateParams = validateNurseData({email, name, password, type, phone, location});
 
 	if (validateParams.error) {
 		return res.status(417).json({status: 'error', message: validateParams.message, data: ''});
@@ -47,7 +46,6 @@ module.exports = async (req, res) => {
 			// hash the user's password
 			const userPassword = hash(password, 10);
 
-			
 			const save = await saveImage(file);
 
 			if (save.error) {
