@@ -1,8 +1,7 @@
 const {storage, firebaseConfig} = require('../config/firebase');
-// const convertToFile = require('./convertToFile');
-// const deleteFile = require('./deleteFile');
 
 module.exports = async (file) => {
+	console.log(file);
 	let status;
 	// split file name to get extension
 	const imageExtension = file.name.split('.')[file.name.split('.').length - 1];

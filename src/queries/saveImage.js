@@ -1,5 +1,6 @@
 const fs = require('fs');
 const {firebaseConfig, storage} = require('../config/firebase');
+
 module.exports = async (file) => {
 	const imageExtension = file.originalname.split('.')[file.originalname.split('.').length - 1];
 	// Append extension to random numbers

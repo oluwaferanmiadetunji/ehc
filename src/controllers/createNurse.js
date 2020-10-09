@@ -3,7 +3,7 @@ const {checkByEmail, checkByPhone} = require('../queries/checkExistingUser');
 const saveNurse = require('../queries/saveNurse');
 const {hash} = require('../helpers/encrypt');
 const {generate} = require('../helpers/jwtToken');
-const saveImage = require('../helpers/saveImage');
+const saveImage = require('../queries/saveImage');
 
 module.exports = async (req, res) => {
 	const email = req.body.email.trim();
@@ -72,6 +72,7 @@ module.exports = async (req, res) => {
 				data: {name, email, phone, type, location, type, imageURL: save.imageUrl, hours, userToken},
 			});
 		} catch (err) {
+			console.log(err);
 			return res.status(500).json({status: 'error', message: 'Something went wrong!', data: ''});
 		}
 	}
