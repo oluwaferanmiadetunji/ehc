@@ -7,6 +7,7 @@ const notification = require('../routes/notification');
 const feedback = require('../routes/feedback');
 const nurse = require('../routes/nurse');
 const hospital = require('../routes/hospital');
+const home = require('../routes/home');
 
 const app = express();
 app.use(cors());
@@ -32,5 +33,6 @@ app.use('/', notification);
 app.use('/', feedback);
 app.use('/', nurse);
 app.use('/', hospital);
+app.use('/', home);
 
 module.exports = app;
