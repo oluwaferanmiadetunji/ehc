@@ -13,65 +13,104 @@ module.exports = async (req, res) => {
 	const phone = req.body.phone;
 	const file = req.file;
 
-	console.log({ body: req.body, file: req.file });
-
 	// validate the user's data
-	// const validateParams = validateUserCredentials({ email, name, password, gender, phone });
+	const validateParams = validateUserCredentials({ email, name, password, gender, phone });
 
-	// if (validateParams.error) {
-	// 	return res.status(417).json({ status: 'error', message: validateParams.message, data: '' });
-	// }
+	if (validateParams.error) {
+		return res.render('index', {
+			error: true,
+			success: false,
+			message: validateParams.message,
+			data: { email, name, password, phone },
+		});
+	}
 
-	// if (!file || !req.file || Object.keys(req.file).length === 0 || Object.keys(file).length === 0) {
-	// 	return res.status(409).json({ status: 'error', message: 'Select a photo', data: '' });
-	// }
-	// if (file.mimetype !== 'image/jpeg' && file.mimetype !== 'image/png' && file.mimetype !== 'image/jpg') {
-	// 	return res.status(409).json({ status: 'error', message: 'Invalid file type', data: '' });
-	// }
+	if (!file || !req.file || Object.keys(req.file).length === 0 || Object.keys(file).length === 0) {
+		return res.render('index', {
+			error: true,
+			success: false,
+			message: 'Select a photo',
+			data: { email, name, password, phone },
+		});
+	}
+	if (file.mimetype !== 'image/jpeg' && file.mimetype !== 'image/png' && file.mimetype !== 'image/jpg') {
+		return res.render('index', {
+			error: true,
+			success: false,
+			message: 'Invalid file type',
+			data: { email, name, password, phone },
+		});
+	}
 
-	// // check if the email already exists
-	// const checkIfUserByEmail = await checkByEmail('User', email);
+	// check if the email already exists
+	const checkIfUserByEmail = await checkByEmail('User', email);
 
-	// if (checkIfUserByEmail) {
-	// 	return res.status(409).json({ status: 'error', message: 'Email exists already', data: '' });
-	// }
+	if (checkIfUserByEmail) {
+		return res.render('index', {
+			error: true,
+			success: false,
+			message: 'Email exists already',
+			data: { email, name, password, phone },
+		});
+	}
 
-	// // check if the phone already exists
-	// const checkIfUserByPhone = await checkByPhone('User', phone);
+	// check if the phone already exists
+	const checkIfUserByPhone = await checkByPhone('User', phone);
 
-	// if (checkIfUserByPhone) {
-	// 	return res.status(409).json({ status: 'error', message: 'Phone number exists already', data: '' });
-	// } else {
-	// 	try {
-	// 		// hash the user's password
-	// 		const userPassword = hash(password, 10);
-	// 		const save = await saveImage(file);
-	// 		if (save.error) {
-	// 			return res.status(500).json({ status: 'error', message: 'Something went wrong!', data: '' });
-	// 		} else {
-	// 			// save the user to the database
-	// 			const addUser = await saveUser({
-	// 				data: { email, name, password: userPassword, phone, imageURL: save.imageUrl, gender, status: 'active' },
-	// 			});
+	if (checkIfUserByPhone) {
+		return res.render('index', {
+			error: true,
+			success: false,
+			message: 'Phone number exists already',
+			data: { email, name, password, phone },
+		});
+	} else {
+		try {
+			// hash the user's password
+			const userPassword = hash(password, 10);
+			const save = await saveImage(file);
+			if (save.error) {
+				return res.render('index', {
+					error: true,
+					success: false,
+					message: 'Something went wrong!',
+					data: { email, name, password, phone },
+				});
+			} else {
+				// save the user to the database
+				const addUser = await saveUser({
+					data: { email, name, password: userPassword, phone, imageURL: save.imageUrl, gender, status: 'active' },
+				});
 
-	// 			if (addUser.error) {
-	// 				return res.status(500).json({ status: 'error', message: addUser.message, data: '' });
-	// 			}
+				if (addUser.error) {
+					return res.render('index', {
+						error: true,
+						success: false,
+						message: addUser.message,
+						data: { email, name, password, phone },
+					});
+				}
 
-	// 			const payload = { name, email, imageURL: save.imageUrl, id: addUser.data._id };
+				const payload = { name, email, imageURL: save.imageUrl, id: addUser.data._id };
 
-	// 			// generate the user's token
-	// 			const userToken = generate(payload);
+				// generate the user's token
+				const userToken = generate(payload);
 
-	// 			return res.status(201).json({
-	// 				status: 'ok',
-	// 				message: addUser.message,
-	// 				data: { name, email, phone, gender, imageURL: save.imageUrl, status: 'active', userToken },
-	// 			});
-	// 		}
-	// 	} catch (err) {
-	// 		console.log(err);
-	// 		return res.status(500).json({ status: 'error', message: 'Something went wrong!', data: '' });
-	// 	}
-	// }
+				return res.render('index', {
+					error: false,
+					message: addUser.message,
+					success: true,
+					data: { email: '', name: '', password: '', phone: '' },
+				});
+			}
+		} catch (err) {
+			console.log(err);
+			return res.render('index', {
+				error: true,
+				success: false,
+				message: 'Something went wrong!',
+				data: { email, name, password, phone },
+			});
+		}
+	}
 };

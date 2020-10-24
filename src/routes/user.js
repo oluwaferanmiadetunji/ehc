@@ -11,7 +11,7 @@ const upload = multer({
 	dest: `${process.cwd()}/src/uploads/`,
 });
 
-router.post('/user/register', upload.single('file'), createUser);
+router.post('/register', upload.single('file'), createUser);
 router.post('/user/login', loginUser);
 router.post('/user/update', updateUser);
 router.post('/user/verify', resetPassword);

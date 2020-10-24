@@ -1,8 +1,19 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', (req, res) => {
-	res.sendFile(process.cwd() + '/index.html');
+function homeController(req, res) {
+	res.send('Welcome');
+}
+
+router.get('/', homeController);
+
+router.get('/register', (req, res) => {
+	res.render('index', {
+		error: false,
+		success: false,
+		message: '',
+		data: { email: '', name: '', password: '', phone: '' },
+	});
 });
 
 module.exports = router;
