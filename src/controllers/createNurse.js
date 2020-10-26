@@ -1,8 +1,7 @@
 const validateNurseData = require('../helpers/validateNurseData');
-const {checkByEmail, checkByPhone} = require('../queries/checkExistingUser');
+const { checkByEmail, checkByPhone } = require('../queries/checkExistingUser');
 const saveNurse = require('../queries/saveNurse');
-const {hash} = require('../helpers/encrypt');
-const {generate} = require('../helpers/jwtToken');
+const { hash } = require('../helpers/encrypt');
 const saveImage = require('../queries/saveImage');
 
 module.exports = async (req, res) => {
@@ -16,31 +15,51 @@ module.exports = async (req, res) => {
 	const file = req.file;
 
 	// validate the user's data
-	const validateParams = validateNurseData({email, name, password, type, phone, location});
+	const validateParams = validateNurseData({ email, name, password, type, phone, location });
 
 	if (validateParams.error) {
-		return res.status(417).json({status: 'error', message: validateParams.message, data: ''});
+		return res.render('nurse', {
+			error: true,
+			success: false,
+			message: 'Select a photo',
+			data: { email, name, password, type, phone, location },
+		});
 	}
 
 	if (!file || !req.file || Object.keys(req.file).length === 0 || Object.keys(file).length === 0) {
-		return res.status(409).json({status: 'error', message: 'Select a photo', data: ''});
+		return res.render('nurse', {
+			error: true,
+			success: false,
+			message: 'Invalid file type',
+			data: { email, name, password, type, phone, location },
+		});
 	}
 	if (file.mimetype !== 'image/jpeg' && file.mimetype !== 'image/png' && file.mimetype !== 'image/jpg') {
-		return res.status(409).json({status: 'error', message: 'Invalid file type', data: ''});
+		return res.status(409).json({ status: 'error', message: 'Invalid file type', data: '' });
 	}
 
 	// check if the email already exists
 	const checkIfUserByEmail = await checkByEmail('Nurse', email);
 
 	if (checkIfUserByEmail) {
-		return res.status(409).json({status: 'error', message: 'Email exists already', data: ''});
+		return res.render('nurse', {
+			error: true,
+			success: false,
+			message: 'Email exists already',
+			data: { email, name, password, type, phone, location },
+		});
 	}
 
 	// check if the phone already exists
 	const checkIfUserByPhone = await checkByPhone('Nurse', phone);
 
 	if (checkIfUserByPhone) {
-		return res.status(409).json({status: 'error', message: 'Phone number exists already', data: ''});
+		return res.render('nurse', {
+			error: true,
+			success: false,
+			message: 'Phone number exists already',
+			data: { email, name, password, type, phone, location },
+		});
 	} else {
 		try {
 			// hash the user's password
@@ -49,31 +68,41 @@ module.exports = async (req, res) => {
 			const save = await saveImage(file);
 
 			if (save.error) {
-				return res.status(500).json({status: 'error', message: 'Something went wrong!', data: ''});
+				return res.render('nurse', {
+					error: true,
+					success: false,
+					message: 'Something went wrong!',
+					data: { email, name, password, type, phone, location },
+				});
 			}
 
 			// save the user to the database
 			const addNurse = await saveNurse({
-				data: {email, name, password: userPassword, phone, type, location, imageURL: save.imageUrl, hours},
+				data: { email, name, password: userPassword, phone, type, location, imageURL: save.imageUrl, hours },
 			});
 
 			if (addNurse.error) {
-				return res.status(500).json({status: 'error', message: addNurse.message, data: ''});
+				return res.render('nurse', {
+					error: true,
+					success: false,
+					message: addUser.message,
+					data: { email, name, password, type, phone, location },
+				});
 			}
 
-			const payload = {name, email, imageURL: save.imageUrl, id: addNurse.data._id};
-
-			// generate the user's token
-			const userToken = generate(payload);
-
-			return res.status(201).json({
-				status: 'ok',
+			return res.render('nurse', {
+				error: false,
 				message: addNurse.message,
-				data: {name, email, phone, type, location, type, imageURL: save.imageUrl, hours, userToken},
+				success: true,
+				data: { email: '', name: '', password: '', type: '', phone: '', location: '', hours: '' },
 			});
 		} catch (err) {
-			console.log(err);
-			return res.status(500).json({status: 'error', message: 'Something went wrong!', data: ''});
+			return res.render('nurse', {
+				error: true,
+				success: false,
+				message: 'Something went wrong!',
+				data: { email, name, password, type, phone, location },
+			});
 		}
 	}
 };

@@ -16,4 +16,13 @@ router.get('/register', (req, res) => {
 	});
 });
 
+router.get('/nurses/add', (req, res) => {
+	res.render('nurse', {
+		error: false,
+		success: false,
+		message: '',
+		data: { email: '', name: '', password: '', type: '', phone: '', location: '', hours: '' },
+	});
+});
+
 module.exports = router;

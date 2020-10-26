@@ -2,7 +2,6 @@ const validateUserCredentials = require('../helpers/validateUserCredentials');
 const { checkByEmail, checkByPhone } = require('../queries/checkExistingUser');
 const saveUser = require('../queries/saveUser');
 const { hash } = require('../helpers/encrypt');
-const { generate } = require('../helpers/jwtToken');
 const saveImage = require('../queries/saveImage');
 
 module.exports = async (req, res) => {
@@ -91,11 +90,6 @@ module.exports = async (req, res) => {
 					});
 				}
 
-				const payload = { name, email, imageURL: save.imageUrl, id: addUser.data._id };
-
-				// generate the user's token
-				const userToken = generate(payload);
-
 				return res.render('index', {
 					error: false,
 					message: addUser.message,
@@ -104,7 +98,6 @@ module.exports = async (req, res) => {
 				});
 			}
 		} catch (err) {
-			console.log(err);
 			return res.render('index', {
 				error: true,
 				success: false,
